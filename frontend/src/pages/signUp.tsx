@@ -2,19 +2,20 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function LoginPage() {
+export default function SignUpPage() {
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate()
 
-    const handleLogin = async () => {
+    const handleSignUp = async () => {
         try {
 
-            const response = await axios.post('http://localhost:3000/auth', {
-                username: name,
+            const response = await axios.post('http://localhost:3000/user', {
+                name: name,
                 password: password
             })
             if (response.status == 200) {
+
                 const token = response.data.token
                 localStorage.setItem("token", token)
                 navigate('/orders')
@@ -33,10 +34,10 @@ export default function LoginPage() {
 
                 <h2 className="title has-text-centered">
 
-                    Login Page
+                    Sign Up Page
                 </h2>
 
-                <p className="has-text-centered"> Please use the form bellow to login</p>
+                <p className="has-text-centered"> Please use the form bellow to Sign Up</p>
                 <form action="" className="form">
                     <label htmlFor="username" className="label">Username</label>
                     <input type="text" className="input" id="username"
@@ -46,8 +47,8 @@ export default function LoginPage() {
                     <input type="password" className="input" id="password"
                         onChange={(e) => { setPassword(e.target.value) }} />
                 </form>
-                <button className="button" onClick={() => { handleLogin() }}> Login</button>
-                <button className="button" onClick={() => {         navigate('/signUp') }}> Sign Up</button>
+                <button className="button" onClick={() => { handleSignUp() }}> Sign Up</button>
+                <button className="button" onClick={() => {  navigate('/')}}> Back To Login</button>
 
             </div>
         </section>

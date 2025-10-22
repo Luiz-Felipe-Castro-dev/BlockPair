@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import io, { Socket } from 'socket.io-client';
-import { useNavigate } from "react-router-dom";
 import OrderHistory from "../components/orderHistory";
 import ActiveOrders from "../components/activeOrders";
 import CreateOrder from "../components/createOrder";
 import OrdersList from "../components/ordersList";
+import Statistics from "../components/statistics";
 
 export default function OrdersPage() {
     const [socket, setSocket] = useState<Socket | null>(null);
@@ -15,7 +15,7 @@ export default function OrdersPage() {
     const [type, setType] = useState('USDtoBTC');
     const [amount, setAmount] = useState(0);
     const [price, setPrice] = useState(0);
-    const navigate = useNavigate()
+
     useEffect(() => {
         const token = localStorage.getItem("token");
         const newSocket = io('http://localhost:5000', {
@@ -45,11 +45,7 @@ export default function OrdersPage() {
         };
     }, [socket]);
 
-    // log out
-    const handleLogOut = () => {
-        localStorage.removeItem("token")
-        navigate('/')
-    }
+
     // Create an order
     const handleCreateOrder = () => {
         if (socket) {
@@ -67,13 +63,8 @@ export default function OrdersPage() {
     return (
         <section className="hero is-fullheight fixed-grid has-4-cols p-4">
             <div className="grid">
-                <div className=" is-flex is-flex-direction-column 
-        is-justify-content-center is=align-items-space-between is-gap-2 box">
-                    <h2>statistics</h2>
-                    <div className="">
-                        <button className='button' onClick={() => { handleLogOut() }}>Log Out</button>
-                    </div>
-                </div>
+     
+                <Statistics/>
                 <OrdersList orders={orders} />
                 <CreateOrder
                     setType={setType}

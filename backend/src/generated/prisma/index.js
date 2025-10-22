@@ -145,7 +145,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\Luiz\\projects\\work\\wisiex_project\\src\\generated\\prisma",
+      "value": "C:\\Users\\Luiz\\projects\\work\\BlockPair\\backend\\src\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -159,7 +159,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\Luiz\\projects\\work\\wisiex_project\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\Users\\Luiz\\projects\\work\\BlockPair\\backend\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -173,12 +173,11 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
-  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": null
+        "value": "postgresql://myuser:mypassword@localhost:5432/mydb?schema=public"
       }
     }
   },

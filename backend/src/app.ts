@@ -13,6 +13,7 @@ import { Socket } from 'socket.io';
 import cors from "cors";
 import { OrderCoinType } from './generated/prisma'
 import { addJobs } from './utils/bullmq'
+import handleSendOrder from './sockets/handlers/sendOrder'
 
 interface AuthenticatedSocket extends Socket {
     user?: UserPayload;
@@ -77,26 +78,8 @@ io.on('connection', (socket) => {
         console.log(message.text, "shenanigans")
         
     })
-    socket.on('send_order', async (orderData: { type: string, price: number; amount: number }) => {
-        if (!authSocket.user) {
-            console.error("User is not authenticated");
-            return;
-        }
-        const order = await prisma.order.create({
-            data: {
-                coinType: orderData.type as OrderCoinType,
-                price: orderData.price,
-                amount: orderData.amount,
-                userId: authSocket.user.id,
-                status: 'PENDING',
-            }
-        })
-        // here i need to trigger a match attempt, the one and only, using a job
-        console.log(order, "order")
-        // await orderMatching(order);
-        await addJobs(order);
-        console.log("order sucessfully created!")
-    })
+ // this handler works to abstract things, do that on all socket.on thingyes
+    handleSendOrder(socket)
     socket.on('get_orders', async (callback) => {
         const orders = await prisma.order.findMany();
         callback(orders);
