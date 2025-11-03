@@ -5,7 +5,7 @@ import { orderMatching } from "../controllers/Order";
 
 
 const connection = {
-    host: 'localhost',
+    host: 'redis',
     port: 6379
 };
 // this is a queue
