@@ -2,6 +2,8 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 export default function SignUpPage() {
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
@@ -10,7 +12,7 @@ export default function SignUpPage() {
     const handleSignUp = async () => {
         try {
 
-            const response = await axios.post('http://localhost:3000/user', {
+            const response = await axios.post(`${apiUrl}:3000/user`, {
                 name: name,
                 password: password
             })

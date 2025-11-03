@@ -6,6 +6,8 @@ import CreateOrder from "../components/createOrder";
 import OrdersList from "../components/ordersList";
 import Statistics from "../components/statistics";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 export default function OrdersPage() {
     const [socket, setSocket] = useState<Socket | null>(null);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -18,7 +20,8 @@ export default function OrdersPage() {
 
     useEffect(() => {
         const token = localStorage.getItem("token");
-        const newSocket = io('http://localhost:5000', {
+       
+        const newSocket = io(`${apiUrl}:5000`, {
             auth: {
                 token,
             },
