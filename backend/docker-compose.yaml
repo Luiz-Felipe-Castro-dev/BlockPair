@@ -16,6 +16,7 @@ services:
       - .env.prod
     networks:
       - prisma-network
+      - web
   postgres_db:
     image: postgres:15
     hostname: postgres_db
@@ -44,8 +45,24 @@ services:
     restart: unless-stopped
     networks:
       - prisma-network
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - web
 networks:
   prisma-network:
     name: prisma-network
+  web:
+    driver: bridge
 volumes:
   redis-data:
+  caddy_data:
+  caddy_config:

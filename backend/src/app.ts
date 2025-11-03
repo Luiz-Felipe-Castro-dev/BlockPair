@@ -31,6 +31,10 @@ app.use(cors({
     origin: 'http://localhost:5173',
     credentials: true,
 }));
+app.use(cors({
+    origin: 'https://blockpair.netlify.app/',
+    credentials: true,
+}));
 app.use(express.json());
 app.use('/user', UserController)
 app.use('/order', OrderController)
