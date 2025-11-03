@@ -13,10 +13,17 @@ api.fasfsaef.store {
   header Access-Control-Allow-Headers "Content-Type, Authorization"
   header Access-Control-Allow-Credentials true
 
-   reverse_proxy {
-    to 127.0.0.1:3000
-    to 127.0.0.1:5000
-    lb_policy least_conn        # or random, round_robin (default)
-    health_uri /health          # optional: active health checks
+  handle @socket {
+    reverse_proxy server:5000
+    # add health_uri here only if server:5000 responds to it
+    # health_uri /health
+  }
+
+  # Everything else (REST/api on 3000)
+  handle {
+    reverse_proxy server:3000 {
+      health_uri /health
+      health_interval 10s
+    }
   }
 }
