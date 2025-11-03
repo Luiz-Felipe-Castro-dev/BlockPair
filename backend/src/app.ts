@@ -11,7 +11,7 @@ import jwt from 'jsonwebtoken';
 import { UserPayload } from './types/UserPayload';
 import { Socket } from 'socket.io';
 import cors from "cors";
-import { OrderCoinType } from './generated/prisma'
+import { OrderCoinType } from '../generated/prisma_client'
 import { addJobs } from './utils/bullmq'
 import handleSendOrder from './sockets/handlers/sendOrder'
 
@@ -19,7 +19,7 @@ interface AuthenticatedSocket extends Socket {
     user?: UserPayload;
 }
 const redisClient = createClient({
-    url: 'redis://localhost:6379'
+    url: 'redis://redis:6379'
 });
 (async () => {
     await redisClient.connect();
@@ -35,6 +35,7 @@ app.use(express.json());
 app.use('/user', UserController)
 app.use('/order', OrderController)
 app.use('/auth', AuthController)
+app.get('/health', (req, res) => {res.status(200).send('ok')});
 
 app.get('/', (req, res) => {
     res.send('hello world!!')

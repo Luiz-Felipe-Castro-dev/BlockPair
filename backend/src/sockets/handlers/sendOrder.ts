@@ -1,6 +1,7 @@
 import { UserPayload } from '../../types/UserPayload';
 import { Socket } from 'socket.io';
-import { OrderCoinType } from '../../generated/prisma'
+
+import { OrderCoinType } from '../../../generated/prisma_client'
 import prisma from '../../utils/prisma';
 import { addJobs } from '../../utils/bullmq'
 
