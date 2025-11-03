@@ -12,7 +12,7 @@ export default function SignUpPage() {
     const handleSignUp = async () => {
         try {
 
-            const response = await axios.post(`${apiUrl}:3000/user`, {
+            const response = await axios.post(`${apiUrl}/user`, {
                 name: name,
                 password: password
             })

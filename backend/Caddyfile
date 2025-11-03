@@ -1,6 +1,16 @@
-
 api.fasfsaef.store {
   encode zstd gzip
+
+  # ----- CORS -----
+  header {
+    Access-Control-Allow-Origin https://blockpair.netlify.app
+    Access-Control-Allow-Methods "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+    Access-Control-Allow-Headers "Content-Type, Authorization"
+    Access-Control-Allow-Credentials true
+    Vary Origin
+  }
+
+  # Preflight
   @preflight {
     method OPTIONS
     header Origin *
@@ -8,22 +18,18 @@ api.fasfsaef.store {
   }
   respond @preflight 204
 
-  header Access-Control-Allow-Origin https://blockpair.netlify.app
-  header Access-Control-Allow-Methods "GET, POST, PUT, PATCH, DELETE, OPTIONS"
-  header Access-Control-Allow-Headers "Content-Type, Authorization"
-  header Access-Control-Allow-Credentials true
-
-  handle @socket {
+  # ----- Routing -----
+  # WebSocket upgrade requests -> :5000
+  @ws {
+    header Connection *Upgrade*
+    header Upgrade websocket
+  }
+  handle @ws {
     reverse_proxy server:5000
-    # add health_uri here only if server:5000 responds to it
-    # health_uri /health
   }
 
-  # Everything else (REST/api on 3000)
+  # Everything else (REST/api) -> :3000
   handle {
-    reverse_proxy server:3000 {
-      health_uri /health
-      health_interval 10s
-    }
+    reverse_proxy server:3000
   }
 }

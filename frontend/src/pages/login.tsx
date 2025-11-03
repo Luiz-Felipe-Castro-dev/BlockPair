@@ -12,7 +12,7 @@ export default function LoginPage() {
     const handleLogin = async () => {
         try {
 
-            const response = await axios.post(`${apiUrl}:3000/auth`, {
+            const response = await axios.post(`${apiUrl}/auth`, {
                 username: name,
                 password: password
             })

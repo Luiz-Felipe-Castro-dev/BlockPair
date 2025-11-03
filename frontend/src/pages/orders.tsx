@@ -21,7 +21,7 @@ export default function OrdersPage() {
     useEffect(() => {
         const token = localStorage.getItem("token");
        
-        const newSocket = io(`${apiUrl}:5000`, {
+        const newSocket = io(`${apiUrl}`, {
             auth: {
                 token,
             },
