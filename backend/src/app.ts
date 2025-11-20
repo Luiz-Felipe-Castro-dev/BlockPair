@@ -45,17 +45,17 @@ app.get('/', (req, res) => {
     res.send('hello world!!')
 })
 
-app.listen(port, () => {
-    console.log(`wisiex project listening on port ${port}`)
-})
 CronTestJob.start()
 // socket.io
 const server = http.createServer(app);
-const io = new Server(3000, {
+const io = new Server(server, {
     cors: {
         origin: "*",
         methods: ["GET", "POST"],
     },
+})
+server.listen(port, () => {
+    console.log(`wisiex project listening on port ${port}`)
 })
 io.use((socket, next) => {
     const token = socket.handshake.auth.token;
@@ -118,6 +118,6 @@ io.on('connection', async (socket) => {
     const orders = await prisma.order.findMany();
     socket.emit('orders', orders);
 });
-server.listen(5000, () => {
-    console.log("http(for some reason) but is socket.io Server is running on port 5000");
-});
+// server.listen(5000, () => {
+//     console.log("http(for some reason) but is socket.io Server is running on port 5000");
+// });
