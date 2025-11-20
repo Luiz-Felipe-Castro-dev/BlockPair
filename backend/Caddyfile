@@ -18,18 +18,6 @@ api.fasfsaef.store {
   }
   respond @preflight 204
 
-  # ----- Routing -----
-  # WebSocket upgrade requests -> :5000
-  @ws {
-    header Connection *Upgrade*
-    header Upgrade websocket
-  }
-  handle @ws {
-    reverse_proxy server:5000
-  }
-
-  # Everything else (REST/api) -> :3000
-  handle {
-    reverse_proxy server:3000
-  }
+  # ----- Reverse proxy (only 3000) -----
+  reverse_proxy server:3000
 }

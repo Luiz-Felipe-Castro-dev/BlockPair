@@ -12,7 +12,9 @@ const Auth: RequestHandler = async (req: Request, res: Response) => {
             name: username,
         },
     })
-    if (!user) return
+    if (!user) {
+        return  res.status(404).send('Username and/or password does not match');
+    }
     const isPasswordMatch = await bcrypt.compare(password, user?.password)
     if (isPasswordMatch) {
         const token = generateToken({ id: user.id, name: user.name });

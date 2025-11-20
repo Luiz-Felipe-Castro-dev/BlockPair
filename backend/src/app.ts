@@ -51,7 +51,7 @@ app.listen(port, () => {
 CronTestJob.start()
 // socket.io
 const server = http.createServer(app);
-const io = new Server(server, {
+const io = new Server(3000, {
     cors: {
         origin: "*",
         methods: ["GET", "POST"],
