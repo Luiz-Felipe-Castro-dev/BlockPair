@@ -45,12 +45,7 @@ app.get('/', (req, res) => {
 CronTestJob.start()
 // socket.io
 const server = http.createServer(app);
-const io = new Server(server, {
-    cors: {
-        origin: "*",
-        methods: ["GET", "POST"],
-    },
-})
+const io = new Server(server)
 server.listen(port, () => {
     console.log(`wisiex project listening on port ${port}`)
 })
