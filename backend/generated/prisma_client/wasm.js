@@ -162,7 +162,7 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": "../../.env",
+    "rootEnvPath": null,
     "schemaEnvPath": "../../.env"
   },
   "relativePath": "../../prisma",
@@ -172,16 +172,17 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
-        "fromEnvVar": null,
-        "value": "postgresql://postgres:prisma@postgres_db:5432/postgres?schema=public"
+        "fromEnvVar": "DATABASE_URL",
+        "value": null
       }
     }
   },
-  "inlineSchema": "datasource db {\n  provider = \"postgresql\"\n\n  url = \"postgresql://postgres:prisma@postgres_db:5432/postgres?schema=public\"\n}\n\ngenerator client {\n  provider = \"prisma-client-js\"\n\n  output = \"../generated/prisma_client\"\n}\n\nmodel User {\n  id Int @id @default(autoincrement())\n\n  name String @unique\n\n  password String\n\n  orders Order[]\n\n  BTCbalance Int @default(100)\n\n  USDbalance Int @default(100000)\n}\n\nmodel Order {\n  id Int @id @default(autoincrement())\n\n  price Int\n\n  userId Int\n\n  user User @relation(fields: [userId], references: [id])\n\n  status OrderStatus @default(PENDING)\n\n  coinType OrderCoinType\n\n  amount Int @default(1)\n\n  created_at DateTime @default(now())\n}\n\nenum OrderStatus {\n  PENDING\n\n  COMPLETED\n}\n\nenum OrderCoinType {\n  BTCtoUSD\n\n  USDtoBTC\n}\n",
-  "inlineSchemaHash": "e41d61f00500e55808e7af758925e04ce3ec5e35e6a74b6e7bb9f22884e10325",
+  "inlineSchema": "datasource db {\n  provider = \"postgresql\"\n\n  url = env(\"DATABASE_URL\")\n}\n\ngenerator client {\n  provider = \"prisma-client-js\"\n\n  output = \"../generated/prisma_client\"\n}\n\nmodel User {\n  id Int @id @default(autoincrement())\n\n  name String @unique\n\n  password String\n\n  orders Order[]\n\n  BTCbalance Int @default(100)\n\n  USDbalance Int @default(100000)\n}\n\nmodel Order {\n  id Int @id @default(autoincrement())\n\n  price Int\n\n  userId Int\n\n  user User @relation(fields: [userId], references: [id])\n\n  status OrderStatus @default(PENDING)\n\n  coinType OrderCoinType\n\n  amount Int @default(1)\n\n  created_at DateTime @default(now())\n}\n\nenum OrderStatus {\n  PENDING\n\n  COMPLETED\n}\n\nenum OrderCoinType {\n  BTCtoUSD\n\n  USDtoBTC\n}\n",
+  "inlineSchemaHash": "c4a164b5965361047d7808d3001da3ff07cd5315fec81de11f8041f7200d15bd",
   "copyEngine": true
 }
 config.dirname = '/'
@@ -199,7 +200,9 @@ config.engineWasm = {
 config.compilerWasm = undefined
 
 config.injectableEdgeEnv = () => ({
-  parsed: {}
+  parsed: {
+    DATABASE_URL: typeof globalThis !== 'undefined' && globalThis['DATABASE_URL'] || typeof process !== 'undefined' && process.env && process.env.DATABASE_URL || undefined
+  }
 })
 
 if (typeof globalThis !== 'undefined' && globalThis['DEBUG'] || typeof process !== 'undefined' && process.env && process.env.DEBUG || undefined) {

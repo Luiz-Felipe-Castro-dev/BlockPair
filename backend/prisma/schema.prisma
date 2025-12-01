@@ -1,7 +1,7 @@
 datasource db {
   provider = "postgresql"
 
-  url = "postgresql://postgres:prisma@postgres_db:5432/postgres?schema=public"
+  url = env("DATABASE_URL")
 }
 
 generator client {

@@ -15,11 +15,15 @@ import { OrderCoinType } from '../generated/prisma_client'
 import { addJobs } from './utils/bullmq'
 import handleSendOrder from './sockets/handlers/sendOrder'
 
+const redisAddress = process.env.redisAddress
+
+const currentEnv = process.env.environment
+
 interface AuthenticatedSocket extends Socket {
     user?: UserPayload;
 }
 const redisClient = createClient({
-    url: 'redis://redis:6379'
+    url: redisAddress
 });
 (async () => {
     await redisClient.connect();
@@ -27,10 +31,12 @@ const redisClient = createClient({
 
 const app = express()
 const port = 3000
-// app.use(cors({
-//     origin: 'http://localhost:5173',
-//     credentials: true,
-// }));
+if(currentEnv=="local"){
+    app.use(cors({
+        origin: 'http://localhost:5173',
+        credentials: true,
+    }));
+}
 
 app.use(express.json());
 app.use('/user', UserController)
@@ -44,8 +50,20 @@ app.get('/', (req, res) => {
 
 CronTestJob.start()
 // socket.io
+
 const server = http.createServer(app);
-const io = new Server(server)
+let io = new Server(server)
+if(currentEnv=="local"){
+io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST"],
+    credentials: true,               
+  },
+});
+}else if(currentEnv=="prod"){
+
+}
 server.listen(port, () => {
     console.log(`wisiex project listening on port ${port}`)
 })

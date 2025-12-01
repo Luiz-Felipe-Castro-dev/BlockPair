@@ -3,9 +3,10 @@
 import { Worker, Queue } from "bullmq";
 import { orderMatching } from "../controllers/Order";
 
+const redisHost = process.env.redisHost
 
 const connection = {
-    host: 'redis',
+    host: redisHost,
     port: 6379
 };
 // this is a queue
