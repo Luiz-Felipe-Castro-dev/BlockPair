@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import logo from "../assets/blockPairLogo.png";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -33,7 +34,13 @@ export default function SignUpPage() {
         <section className=" hero is-fullheight is-flex is-justify-content-center is-align-items-center">
             <div className="box is-flex is-flex-direction-column 
             is-justify-content-center is=align-items-space-between is-gap-2">
+                
+                <div className="has-text-centered" >
 
+                    <figure className=" image is-128x128 is-inline-block" >
+                        <img src={logo} />
+                    </figure>
+                </div>
                 <h2 className="title has-text-centered">
 
                     Sign Up Page
@@ -50,7 +57,7 @@ export default function SignUpPage() {
                         onChange={(e) => { setPassword(e.target.value) }} />
                 </form>
                 <button className="button" onClick={() => { handleSignUp() }}> Sign Up</button>
-                <button className="button" onClick={() => {  navigate('/')}}> Back To Login</button>
+                <button className="button" onClick={() => { navigate('/') }}> Back To Login</button>
 
             </div>
         </section>

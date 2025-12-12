@@ -16,7 +16,7 @@
     "db:deploy": "npx prisma migrate deploy && npx prisma generate",
 
     "generatePrisma":"npx prisma generate",
-    "localDev":"docker compose -f docker-compose-dev.yaml up --build && npx ts-node-dev  src/app.ts"
+    "localDev":"docker compose -f docker-compose-dev.yaml up --build -d && npx ts-node-dev src/app.ts"
   },
   "author": "",
   "license": "ISC",
