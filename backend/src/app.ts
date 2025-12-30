@@ -31,7 +31,7 @@ const redisClient = createClient({
 
 const app = express()
 const port = 3000
-if(currentEnv=="local"){
+if (currentEnv == "local") {
     app.use(cors({
         origin: 'http://localhost:5173',
         credentials: true,
@@ -42,7 +42,7 @@ app.use(express.json());
 app.use('/user', UserController)
 app.use('/order', OrderController)
 app.use('/auth', AuthController)
-app.get('/health', (req, res) => {res.status(200).send('ok')});
+app.get('/health', (req, res) => { res.status(200).send('ok') });
 
 app.get('/', (req, res) => {
     res.send('hello world!!')
@@ -53,15 +53,15 @@ CronTestJob.start()
 
 const server = http.createServer(app);
 let io = new Server(server)
-if(currentEnv=="local"){
-io = new Server(server, {
-  cors: {
-    origin: "http://localhost:5173",
-    methods: ["GET", "POST"],
-    credentials: true,               
-  },
-});
-}else if(currentEnv=="prod"){
+if (currentEnv == "local") {
+    io = new Server(server, {
+        cors: {
+            origin: "http://localhost:5173",
+            methods: ["GET", "POST"],
+            credentials: true,
+        },
+    });
+} else if (currentEnv == "prod") {
 
 }
 server.listen(port, () => {
@@ -91,9 +91,9 @@ io.on('connection', (socket) => {
     socket.on('send_message', async (message) => {
 
         console.log(message.text, "shenanigans")
-        
+
     })
- // this handler works to abstract things, do that on all socket.on thingyes
+    // this handler works to abstract things, do that on all socket.on thingyes
     handleSendOrder(socket)
     socket.on('get_orders', async (callback) => {
         const orders = await prisma.order.findMany();
@@ -117,11 +117,30 @@ io.on('connection', (socket) => {
         });
         callback(orders);
     });
-    socket.on('cancel_order', async (data,callback) => {
-         const { orderId } = data;
-        const orders = await prisma.order.delete({where:{id:orderId}
+    socket.on('cancel_order', async (data, callback) => {
+        const { orderId } = data;
+        const orders = await prisma.order.delete({
+            where: { id: orderId }
         });
         callback(orders);
+    });
+    socket.on('get_stats', async (callback) => {
+        const balance = await prisma.user.findFirst({
+            where: {
+                id: authSocket.user?.id,
+            }
+        });
+        const totalOrders = await prisma.order.count({
+            where: {
+                userId: authSocket.user?.id,
+            }
+        });
+        const stats = {
+            BTCBalance : balance?.BTCbalance,
+            USDBalance :balance?.USDbalance,
+            TotalTrades: totalOrders
+        };
+        callback(stats);
     });
 });
 io.on('connection', async (socket) => {

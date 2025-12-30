@@ -1,23 +1,32 @@
+import {  useState } from "react";
+
 type Order = {
     id: number,
     amount: number,
-    coinType: number,
+    coinType: string,
     price: number,
     status: string,
     userId: number,
 }
-type OrderHistoryProps = {
+type AskListProps = {
     orders: Order[];
 };
-export default function OrdersList({ orders }: OrderHistoryProps) {
+export default function AskList({ orders }: AskListProps) {
+    const [type, setType] = useState("USDtoBTC");
+
     return (
         <div className=" is-flex is-flex-direction-column 
         is-justify-content-center is=align-items-space-between is-gap-2 box">
 
             <h2 className="title has-text-centered">
-
-                Orders list
+                Asks
             </h2>
+            <div className="select">
+                <select onChange={(e) => { setType(e.target.value) }}>
+                    <option value={"BTCtoUSD"}>BTC asks</option>
+                    <option value={"USDtoBTC"}>USD asks</option>
+                </select>
+            </div>
             <div className="scroll-y">
 
                 <table className="table">
@@ -32,8 +41,7 @@ export default function OrdersList({ orders }: OrderHistoryProps) {
                         </tr>
                     </thead>
                     <tbody>
-
-                        {orders.map((order) => (
+                        {orders.filter(order => order.coinType !== type).map((order) => (
                             <tr>
                                 {/* <td >{order.id}</td> */}
                                 <td >{order.coinType}</td>
@@ -43,7 +51,6 @@ export default function OrdersList({ orders }: OrderHistoryProps) {
                                 {/* <td >{order.userId}</td> */}
                             </tr>
                         ))}
-
                     </tbody>
                 </table>
             </div>

@@ -36,16 +36,16 @@ export default function ActiveOrders({ socket }: OrderHistoryProps) {
     return (
         <div className="is-flex is-flex-direction-column 
         is-justify-content-center is=align-items-space-between is-gap-2 box">
-            <h1 className="title">Active Orders</h1>
+            <h1 className="title">My Active Orders</h1>
             <table className="table">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Tipo</th>
-                        <th>Quantia</th>
-                        <th>Preço</th>
+                        {/* <th>ID</th> */}
+                        <th>Type</th>
+                        <th>Amount</th>
+                        <th>Price</th>
                         <th>Status</th>
-                        <th>User ID</th>
+                        {/* <th>User ID</th> */}
                         <th>Cancel</th>
                     </tr>
                 </thead>
@@ -53,12 +53,12 @@ export default function ActiveOrders({ socket }: OrderHistoryProps) {
 
                     {orders.map((order) => (
                         <tr>
-                            <td >{order.id}</td>
+                            {/* <td >{order.id}</td> */}
                             <td >{order.coinType}</td>
                             <td >{order.amount}</td>
                             <td >{order.price}</td>
                             <td >{order.status}</td>
-                            <td >{order.userId  }</td>
+                            {/* <td >{order.userId  }</td> */}
                             <td onClick={() => { cancelOrder(order.id) }}>X</td>
                         </tr>
                     ))}

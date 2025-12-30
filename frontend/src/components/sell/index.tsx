@@ -1,28 +1,28 @@
 import { SetStateAction, Dispatch } from "react";
 
-type CreateOrderProps = {
+type SellProps = {
     setType: Dispatch<SetStateAction<string>>,
     setAmount: Dispatch<SetStateAction<number>>,
     setPrice: Dispatch<SetStateAction<number>>,
     handleCreateOrder: () => void,
 };
 
-export default function CreateOrder({
+export default function Sell({
     setType,
     setAmount,
     setPrice,
     handleCreateOrder
-}: CreateOrderProps) {
+}: SellProps) {
 
     return (
         <div className="is-flex is-flex-direction-column 
         is-justify-content-center is=align-items-space-between is-gap-2 box">
-            <h1 className="title">Buy</h1>
+            <h1 className="title">Sell</h1>
             <label htmlFor="Type" className="label">Type</label>
             <div className="select">
                 <select onChange={(e) => { setType(e.target.value) }}>
-                    <option value={"USDtoBTC"}>Buy BTC</option>
-                    <option value={"BTCtoUSD"}>Buy USD</option>
+                    <option value={"USDtoBTC"}>Sell USD</option>
+                    <option value={"BTCtoUSD"}>Sell BTC</option>
                 </select>
             </div>
 
